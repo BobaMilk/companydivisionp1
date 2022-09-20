@@ -1,32 +1,35 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <fstream>
 using namespace std;
 
 struct Division {
     string name;
-    int quarter;
-    double qSales;
+    int quarter[4] = {1,2,3,4};
+    double qSales[4];
 };
-
 
 int main()
 {
-    vector<Division*> quarter;
+    ofstream out; //Storing to this file
+    out.open("D:\\CodingProjects\\text\\test.txt");
+
+    vector<Division*> quarter; //Saving each division pointer so I can reaccess 
     string quarters[4] = { "East","West","North","South" };
 
-    for (int i = 0;i < 4;i++) {
+    for (int i = 0;i < 4;i++) { //For each division
         Division* p = new Division;
         p->name = quarters[i];
-        p->quarter = i+1;
-        cout << "What is " << quarters[i] << "'s quarterly sale?\n";
-        cin >> p->qSales;
+        out << p->name << endl; //Save name to file
+        for (int j = 0;j < 4;j++) { //For each quarter
+            do {
+                cout << "\nWhat is " << quarters[i] << "'s quarter " << j+1 << " sale ? \n";
+                cin >> p->qSales[j];
+            } while (p->qSales[j] < 0);
+            out << quarters[i] << "'s quarterly sale for quarter " << j+1 << ": " << p->qSales[j] << endl;
+        }
         quarter.push_back(p);
-    }
-
-    for (int i = 0;i < 4;i++) {
-        cout << "\nName: " << quarter.at(i)->name << endl;
-        cout << "Quarter: " << quarter.at(i)->quarter << endl;
-        cout << "Quarter Sales: " << quarter.at(i)->qSales << endl;
     }
 }
